@@ -2,8 +2,10 @@ package telran.numbers.test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 import org.junit.jupiter.api.Test;
 
@@ -32,11 +34,8 @@ class GroupsSumTest {
 	private int[][] getLargeGroups(int nGroups, int groupLength) {
 		// creating random two dimensional array
 		// using method generate of Stream
-		return IntStream.range(0, nGroups).mapToObj(i -> randomArray(groupLength)).toArray(int[][]::new);
-	}
-	private int[] randomArray(int numberOfElements) {
-		ThreadLocalRandom random = ThreadLocalRandom.current();
-		return IntStream.generate(random::nextInt).limit(numberOfElements).toArray();
+		return Stream.generate(() -> new Random().ints(groupLength).toArray())
+				.limit(nGroups).toArray(int[][]::new);
 	}
 	@Test
 	void groupsSumTaskThreadPerformance() {
